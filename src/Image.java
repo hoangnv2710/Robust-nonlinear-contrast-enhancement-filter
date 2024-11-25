@@ -1,8 +1,8 @@
 public class Image {
-    int DELTA = 60;
-    int K = 5;
-    int L = 5;
-    double A = 1000;
+    double DELTA ;
+    int K ;
+    int L ;
+    double A;
     public int width;
     public int height;
     public double[] mGau;
@@ -18,10 +18,11 @@ public class Image {
         setPixels(intensity);
     }
 
-    public Image(int[][] intensity, int K, int L, double A) {
+    public Image(int[][] intensity, int K, int L, double DELTA, double A) {
         this.K = K;
         this.L = L;
         this.A = A;
+        this.DELTA = DELTA;
         setM();
         setPixels(intensity);
     }
@@ -30,9 +31,8 @@ public class Image {
         mGau = new double[256];
         mExp = new double[256];
         for(int i = 0; i < 256; i++) {
-            mGau[i] = Math.exp(-(i*i)/((double) A*A));
-            mExp[i] = Math.exp(-i/((double) A));
-//            System.out.println(i + " " + mExp[i] + " " + mGau[i]);
+            mGau[i] = Math.exp(-(i*i)/(DELTA*DELTA));
+            mExp[i] = Math.exp(-i/(DELTA));
         }
     }
 
@@ -78,7 +78,6 @@ public class Image {
                 }
                 k = iEnd - iStart + 1;
                 l = jEnd - jStart + 1;
-                //System.out.println(i + "  " + j + "  " + iStart + "  " + iEnd + "  " + jStart + "  " + jEnd + "  " + k + "  " + l);
                 double[][] maskGau = new double[k][l];
                 double[][] maskExp = new double[k][l];
                 int currentIntensity = pixels[i][j].intensity;
@@ -103,13 +102,13 @@ public class Image {
                         sumMGau += maskGau[x][y];
                     }
                 }
-                pixels[i][j].setmaskGLEexp(maskExp);
+                pixels[i][j].setmaskExp(maskExp);
                 double mAvgExp = sumMExp / (k * l);
                 double yLExp = sumMIntensityExp / sumMExp;
                 double yHExpGLE = sumMIntensityExp - mAvgExp * sumIntensity;
                 outputGLEexp[i][j] = (int) (yLExp + (yLExp * yHExpGLE) / A) ;
 
-                pixels[i][j].setmaskGLEgau(maskGau);
+                pixels[i][j].setmaskGau(maskGau);
                 double mAvgGau = sumMGau / (k * l);
                 double yLGau = sumMIntensityGau / sumMGau;
                 double yHGauGLE = sumMIntensityGau - mAvgGau * sumIntensity;

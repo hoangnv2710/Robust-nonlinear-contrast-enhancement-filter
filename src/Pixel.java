@@ -1,25 +1,17 @@
 public class Pixel {
     int intensity ;
-    int K = 3;
-    int L = 3;
-    public double[][] maskGLEgau;
-    public double[][] maskGLEexp;
-
-    Pixel(int intensity, int K, int L) {
-        this.intensity = intensity;
-        this.K = K;
-        this.L = L;
-    }
+    public double[][] maskGau;
+    public double[][] maskExp;
 
     public Pixel(int intensity) {
         this.intensity = intensity;
     }
 
-    public void setmaskGLEgau(double[][] maskGLEgau) {
-        this.maskGLEgau = maskGLEgau;
+    public void setmaskGau(double[][] maskGau) {
+        this.maskGau = maskGau;
     }
 
-    public void setmaskGLEexp(double[][] maskGLEexp) {
-        this.maskGLEexp = maskGLEexp;
+    public void setmaskExp(double[][] maskExp) {
+        this.maskExp = maskExp;
     }
 }

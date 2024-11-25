@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Robust nonlinear contrast enhancement:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Robust_nonlinear_contrast_enhancement_jar</output-path>
+    <root id="archive" name="Robust nonlinear contrast enhancement.jar">
+      <element id="module-output" name="Robust nonlinear contrast enhancement" />
+    </root>
+  </artifact>
+</component>

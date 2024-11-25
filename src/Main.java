@@ -1,75 +1,67 @@
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class Main {
-
+    static String path;
+    static int K = 3;
+    static int L = 3;
+    static double DELTA = 120;
+    static double A = 180;
     public static void main(String[] args) {
-//        Process.createGrayCircle(151);
+        String choice = "1";
+        Scanner s = new Scanner(System.in);
+        do {
+            System.out.println("\nNhập setting vào file setting.txt.");
+            readSetting();
+            System.out.println();
+            writeOutput();
+            System.out.println("\n\nNhập 0 để thoát hoặc nhập bất kì để tiếp tục:");
+            choice = s.nextLine();
+        } while (!choice.equals("0"));
+
+    }
+
+    public static void readSetting() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter để tiếp tục...");
+        s.nextLine();
         try {
-            int matrix[][] = Process.toMatrix();
-            Image image = new Image(matrix);
+//            String jarDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
+//                    .toURI()).getParent();
+//            File file = new File(jarDir,"setting.txt");
+            File file = new File("setting.txt");
+            Scanner sc = new Scanner(file);
+            path = sc.nextLine();
+            K = sc.nextInt();
+            L = sc.nextInt();
+            DELTA = sc.nextDouble();
+            A = sc.nextDouble();
+            System.out.println("Setting: path =" + path + ", K =" + K + ", L =" + L + ", DELTA =" + DELTA + ", A =" + A);
+        } catch (FileNotFoundException e) {
+            System.out.println("Không tìm thấy file setting!");
+            readSetting();
+        } catch (NoSuchElementException e) {
+            System.out.println("Setting sai hoặc thiếu, yêu cầu nhập lại!");
+            readSetting();
+        }
+//        catch (URISyntaxException e) {
+//            System.out.println("url không hợp lệ");
+//        }
+    }
+
+    public static void writeOutput() {
+        try {
+            int matrix[][] = Process.toMatrix(path);
+            Image image = new Image(matrix, K, L , DELTA, A);
             image.setPixelsMask();
-            Process.toImage(image.outputGLEexp, "GLEexp");
-            Process.toImage(image.outputGLEgau, "GLEgau");
-            Process.toImage(image.outputLLEexp, "LLEexp");
-            Process.toImage(image.outputLLEgau, "LLEgau");
-
-            Pixel p[][] = image.pixels;
-            int width = image.width;
-            int height = image.height;
-            //for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(Pi[x][y] + "  ");}System.out.println();}
-            double Pi[][] = p[0][0].maskGLEexp;
-//            width = Pi.length;
-//            height = Pi[0].length;
-//            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(Pi[x][y] + "  ");}System.out.println();}
-
-            int gau[][] = image.outputGLEgau;
-//            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(gau[x][y] + "\t");}System.out.println();}
-
-//            Pixel p[][] = image.pixels;
-//            int width = image.width;
-//            int height = image.height;
-
-//
-//            double Pi[][] = p[width - 1][height - 1].mExponential;
-//            width = Pi.length;
-//            height = Pi[0].length;
-//            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(Pi[x][y] + "  ");}System.out.println();}
-
-//            for(int i = 0; i <= 5; i++) {
-//                Process.writeMatrixToFile(Pi,"mexp" + i + ".txt");
-//            }
-
-
-//            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(p[x][y].intensity + "\t");}System.out.println();}
-//            image.setPixelsMask();
-//
-//            Process.toImage(image.out);
-
-
-//            double m[] = image.mExp;
-//            for (int j = 0; j < m.length; j++) {
-//                System.out.println(j + "  " + m[j]);
-//            }
-
-//            int matrix[][] = Process.toMatrix();
-//            Process.toImage(matrix,"graymatrix");
-//            Process.toImage(Process.toMatrix(),"rbgmatrix");
-//            for (int i = 0; i < matrix.length; i++) {
-//                for (int j = 0; j < matrix[i].length; j++) {
-//                    System.out.print(matrix[i][j] - Process.rbgMatrix[i][j] + "\t");
-//                }
-//                System.out.println();
-//            }
-//            for (int[] row : matrix) {
-//                for (int value : row) {
-//                    System.out.print(value + "\t");
-//                }
-//                System.out.println();
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            Process.toImage(image.outputGLEexp, path.substring(0, path.lastIndexOf('.')) + " GLEexp " + K +"x" + L + "," + DELTA + "," + A);
+            Process.toImage(image.outputGLEgau, path.substring(0, path.lastIndexOf('.')) + " GLEgau " + K +"x" + L + "," + DELTA + "," + A);
+            Process.toImage(image.outputLLEexp, path.substring(0, path.lastIndexOf('.')) + " LLEexp " + K +"x" + L + "," + DELTA + "," + A);
+            Process.toImage(image.outputLLEgau, path.substring(0, path.lastIndexOf('.')) + " LLEgau " + K +"x" + L + "," + DELTA + "," + A);
+        } catch (IOException e) {
+            System.out.println("Lỗi file hình ảnh!");
         }
     }
 }

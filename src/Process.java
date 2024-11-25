@@ -2,16 +2,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Process {
-    static String path = "int_gray.png";
-    static String grayPath;
-    static String outPath;
 
-    public static int[][] toMatrix() throws IOException {
+    public static int[][] toMatrix(String path) throws IOException {
         String fileName = path.substring(0, path.lastIndexOf('.'));
         File input = new File(path);
         BufferedImage image = ImageIO.read(input);
@@ -20,7 +16,7 @@ public class Process {
         int grayMatrix[][] = new int[width][height];
 
         if (image.getType() != BufferedImage.TYPE_BYTE_GRAY) {
-            grayPath = fileName + "_gray.png";
+            String grayPath = fileName + "_gray.png";
             System.out.println("Ảnh không phải 8-bit grayscale.");
             System.out.println("Thực hiện chuyển hình ảnh sang 8-bit grayscale..." + path + " --> " + grayPath);
             BufferedImage grayImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
@@ -39,7 +35,6 @@ public class Process {
             File output = new File(grayPath);
             ImageIO.write(grayImage, "png", output);
             System.out.println("Ảnh grayscale <" + grayPath + "> đã được lưu thành công!");
-//            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(grayMatrix[x][y] + "\t");}System.out.println();}
             return grayMatrix;
         }
 
@@ -49,7 +44,6 @@ public class Process {
         }
         return grayMatrix;
     }
-
 
     public static void toImage(int[][] matrix, String fileName) throws IOException {
         int width = matrix.length;
@@ -62,11 +56,8 @@ public class Process {
                 raster.setSample(x, y, 0, grayValue);
             }
         }
-
-        outPath = fileName + "_output.png";
-        File output = new File(outPath);
+        File output = new File(fileName + "_output.png");
         ImageIO.write(image, "png", output);
-        System.out.println("ảnh thành công!");
+        System.out.println("Xuất ảnh <" + fileName + "_output.png> thành công!");
     }
-
 }
