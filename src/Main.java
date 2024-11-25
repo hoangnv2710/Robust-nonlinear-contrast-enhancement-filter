@@ -12,7 +12,8 @@ public class Main {
             image.setPixelsMask();
             Process.toImage(image.outputGLEexp, "GLEexp");
             Process.toImage(image.outputGLEgau, "GLEgau");
-
+            Process.toImage(image.outputLLEexp, "LLEexp");
+            Process.toImage(image.outputLLEgau, "LLEgau");
 
             Pixel p[][] = image.pixels;
             int width = image.width;
@@ -24,7 +25,7 @@ public class Main {
 //            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(Pi[x][y] + "  ");}System.out.println();}
 
             int gau[][] = image.outputGLEgau;
-            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(gau[x][y] + "\t");}System.out.println();}
+//            for (int x = 0; x < width; x++) {for (int y = 0; y < height; y++) {System.out.print(gau[x][y] + "\t");}System.out.println();}
 
 //            Pixel p[][] = image.pixels;
 //            int width = image.width;

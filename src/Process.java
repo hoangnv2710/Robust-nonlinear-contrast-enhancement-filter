@@ -69,6 +69,4 @@ public class Process {
         System.out.println("ảnh thành công!");
     }
 
-
-
 }

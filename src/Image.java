@@ -1,8 +1,8 @@
 public class Image {
-    int DELTA = 40;
-    int K = 3;
-    int L = 3;
-    double A = 300;
+    int DELTA = 60;
+    int K = 5;
+    int L = 5;
+    double A = 1000;
     public int width;
     public int height;
     public double[] mGau;
@@ -106,14 +106,30 @@ public class Image {
                 pixels[i][j].setmaskGLEexp(maskExp);
                 double mAvgExp = sumMExp / (k * l);
                 double yLExp = sumMIntensityExp / sumMExp;
-                double yHExp = sumMIntensityExp - mAvgExp * sumIntensity;
-                outputGLEexp[i][j] = (int) (yLExp + (yLExp * yHExp) / A) ;
+                double yHExpGLE = sumMIntensityExp - mAvgExp * sumIntensity;
+                outputGLEexp[i][j] = (int) (yLExp + (yLExp * yHExpGLE) / A) ;
 
                 pixels[i][j].setmaskGLEgau(maskGau);
                 double mAvgGau = sumMGau / (k * l);
                 double yLGau = sumMIntensityGau / sumMGau;
-                double yHGau = sumMIntensityGau - mAvgGau * sumIntensity;
-                outputGLEgau[i][j] = (int) (yLGau + (yHGau * yLGau) / A) ;
+                double yHGauGLE = sumMIntensityGau - mAvgGau * sumIntensity;
+                outputGLEgau[i][j] = (int) (yLGau + (yLGau * yHGauGLE) / A) ;
+
+                double sumDiffMgau = 0;
+                double sumDiffMexp = 0;
+                for (int p = iStart; p <= iEnd; p++) {
+                    for (int q = jStart; q <= jEnd; q++) {
+                        int x = p - iStart;
+                        int y = q - jStart;
+                        sumDiffMgau += Math.abs(maskGau[x][y] - mAvgGau);
+                        sumDiffMexp += Math.abs(maskExp[x][y] - mAvgExp);
+                    }
+                }
+                int diffIntensity = currentIntensity * k * l - sumIntensity;
+                double yHExpLLE = sumDiffMexp * diffIntensity;
+                outputLLEexp[i][j] = (int) (yLExp + (yLExp * yHExpLLE) / A) ;
+                double yHGauLLE = sumDiffMgau * diffIntensity;
+                outputLLEgau[i][j] = (int) (yLGau + (yLGau * yHGauLLE) / A) ;
             }
         }
     }
