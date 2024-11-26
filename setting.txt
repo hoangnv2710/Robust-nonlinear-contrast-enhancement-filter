@@ -1,5 +1,5 @@
-int_gray.png
-3
-3
+lena.png
+5
+5
 180
-500
+600

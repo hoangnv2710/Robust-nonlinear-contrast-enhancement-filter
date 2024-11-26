@@ -62,6 +62,7 @@ public class Main {
             Process.toImage(image.outputLLEgau, path.substring(0, path.lastIndexOf('.')) + " LLEgau " + K +"x" + L + "," + DELTA + "," + A);
         } catch (IOException e) {
             System.out.println("Lỗi file hình ảnh!");
+            e.printStackTrace();
         }
     }
 }
